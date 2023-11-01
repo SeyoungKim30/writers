@@ -21,4 +21,25 @@
     <!-- 프로젝트 패키지이름 확인 -->
     <context:component-scan base-package="com.usit.writersmaven" />
 <!--dispatcher servlet, container-->
+    <context:property-placeholder location="WEB-INF/context-config"/>
+
+
+    <!-- MariaDB DataSource 설정 -->
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+        <beans:property name="url" value="${jdbc.url}" />
+        <beans:property name="username" value="${jdbc.username}" />
+        <beans:property name="password" value="${jdbc.password}" />
+    </beans:bean>
+
+    <!-- MyBatis SqlSessionFactory 설정 -->
+    <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <beans:property name="dataSource" ref="dataSource" />
+        <beans:property name="configLocation" value="${mybatis.location}" />
+    </beans:bean>
+    <!-- MyBatis Mapper 스캔 설정 -->
+    <beans:bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <beans:property name="basePackage" value="com.usit.writersmaven.dao" />
+    </beans:bean>
+
 </beans:beans>
