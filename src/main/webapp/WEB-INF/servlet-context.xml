@@ -42,7 +42,7 @@
     <!-- MyBatis SqlSessionFactory 설정 -->
     <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <beans:property name="dataSource" ref="dataSource" />
-        <beans:property name="configLocation" value="${mybatis.location}" />
+        <beans:property name="configLocation" value="classpath:mapper/mybatis-config.xml" />
     </beans:bean>
     <!-- MyBatis Mapper 스캔 설정 -->
     <beans:bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -53,7 +53,7 @@
     <!-- 웹소켓통신 -->
     <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
     <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
-    <beans:bean id="chatHandler" class="com.usit.writersmaven.Handler_chat"/>
+    <beans:bean id="chatHandler" class="com.usit.writersmaven.controller.Handler_chat"/>
     <mvc:default-servlet-handler/>
     <websocket:handlers>
         <websocket:mapping handler="chatHandler" path="/chat"/>
