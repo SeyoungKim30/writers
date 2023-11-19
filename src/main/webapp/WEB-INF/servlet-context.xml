@@ -3,9 +3,16 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:context="http://www.springframework.org/schema/context"
-             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+             xmlns:websocket="http://www.springframework.org/schema/websocket"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/websocket
+                http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <annotation-driven />
 
@@ -41,5 +48,19 @@
     <beans:bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <beans:property name="basePackage" value="com.usit.writersmaven.dao" />
     </beans:bean>
+
+
+    <!-- 웹소켓통신 -->
+    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+    <beans:bean id="chatHandler" class="com.usit.writersmaven.Handler_chat"/>
+    <mvc:default-servlet-handler/>
+    <websocket:handlers>
+        <websocket:mapping handler="chatHandler" path="/chat"/>
+        <websocket:handshake-interceptors>
+            <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
 
 </beans:beans>

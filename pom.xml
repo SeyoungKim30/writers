@@ -38,6 +38,14 @@
       <version>${org.springframework-version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-websocket</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
+
+
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -148,6 +156,7 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
   <build>
     <finalName>writersmaven</finalName>

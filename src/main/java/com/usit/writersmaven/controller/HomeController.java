@@ -28,4 +28,9 @@ public class HomeController {
         model.addAttribute("get",service.seyoung());
         return "contactlist";
     }
+
+    @GetMapping("/chatpage")
+    public String chatpage(){
+        return "chatpage";
+    }
 }
