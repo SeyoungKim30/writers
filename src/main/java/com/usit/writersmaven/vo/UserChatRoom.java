@@ -2,10 +2,10 @@ package com.usit.writersmaven.vo;
 
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-public class userChatRoom {
+public class UserChatRoom {
     String chatRoomId;
     Set<WebSocketSession> sessions;
 
