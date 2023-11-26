@@ -53,29 +53,65 @@
 
             var messageDiv = $("<div></div>")
                 .addClass("message")
-                .addClass(alignClass)
-                .text(sender + content);
+                .addClass(alignClass);
+
+            // Show sender name
+            var senderNameDiv = $("<div></div>")
+                .addClass("sender-name")
+                .text(sender);
+
+            // Show message content
+            var contentDiv = $("<div></div>")
+                .append(senderNameDiv)
+                .append("<p>" + content + "</p>");
+
+            messageDiv.append(contentDiv);
 
             $("#chat-messages").append(messageDiv);
+
             // Scroll to the bottom
             var chatMessages = document.getElementById("chat-messages");
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
+
+
+        function create() {
+            const chatform = {
+                type: "CREATE"
+            }
+            socket.send(JSON.stringify(chatform));
+            $("#chat-messages").html("");
+        }
+
+        function join(){
+            const chatform = {
+                type: "JOIN",
+                chatRoomId: $('#chatRoomId').val()
+            }
+            socket.send(JSON.stringify(chatform));
+            $("#chat-messages").html("");
+        }
+
     </script>
 </head>
 <body>
+<div>
+    <button onclick="create()">CREATE</button>
+    <button onclick="join()">JOIN</button>
+</div>
 
-<div id="chat-container">
+    <div id="chat-container">
     <div id="chat-messages"></div>
-    <form id="chatform">
-        session : <input id="session">
-        chatRoomId : <input id="chatRoomId" name="chatRoomId" placeholder="chatRoomId">
-        Type :<select id="type" name="type" ><option>MESSAGE</option><option>CREATE</option><option>JOIN</option></select>
+        <form id="chatform">
+            session : <input id="session"><br>
+            chatRoomId : <input id="chatRoomId" name="chatRoomId" placeholder="chatRoomId"><br>
+            Type :<select id="type" name="type" ><option>MESSAGE</option><option>CREATE</option><option>JOIN</option></select><br>
+
         Sender : <input id="sender" name="sender" value="userA">
         Content : <input name="content" id="content" placeholder="Type your message"/>
-    <button type="button" id="send-btn" onclick="sendMessage()">Send</button>
-    </form>
+    <button type="button" id="send-btn" onclick="sendMessage()">Send</button></form>
 </div>
+
 
 </body>
 </html>

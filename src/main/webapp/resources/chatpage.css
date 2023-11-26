@@ -14,6 +14,8 @@ body {
 }
 
 #chat-messages {
+    display: flex;
+    flex-direction: column;
     max-height: 400px;
     overflow-y: auto;
     padding: 10px;
@@ -28,17 +30,20 @@ body {
 }
 
 .message.right {
+    max-width: 80%;
     background-color: #28a745;
     color: #fff;
     align-self: flex-end;
 }
 
 .message.left {
+    max-width: 80%;
     background-color: #f1f1f1;
     color: #333;
+    align-self: flex-start;
 }
 
-#message-input {
+#content {
     width: 80%;
     padding: 8px;
     border: none;

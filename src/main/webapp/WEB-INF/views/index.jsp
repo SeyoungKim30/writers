@@ -3,6 +3,6 @@
 <body>
 <h2>Hello World!</h2>
 <a href="/contactlist">목록보기</a>
-<a href="/chatpage">chat page</a>
+<a href="/chat/list">chat list</a>
 </body>
 </html>

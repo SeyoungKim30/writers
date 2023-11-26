@@ -14,23 +14,29 @@ import java.util.UUID;
 @Component
 public class Handler_chat extends TextWebSocketHandler {
 
-    //private static Map<String, WebSocketSession> sessions = new HashMap<>();
     private static Map<String, Map<String, WebSocketSession>> chatRooms = new HashMap<>();  //채팅방 아이디, 세션들맵
     private static ObjectMapper objectMapper = new ObjectMapper();
 
+
+    //setNewMessage(type,chatRoomId,session,sender,content)
+    public Map<String, String> setNewMessage(String type,String chatRoomId,String session,String sender,String content){
+        Map<String, String> newMessage = new HashMap<>();
+        if(type!=null)          newMessage.put("type",type);
+        if(chatRoomId!=null)    newMessage.put("chatRoomId",chatRoomId);
+        if(session!=null)       newMessage.put("session",session);
+        if(sender!=null)        newMessage.put("sender",sender);
+        if(content!=null)       newMessage.put("content",content);
+        return newMessage;
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        System.out.println("새 연결" + session.getId());
+        System.out.println("chatRooms toString" + chatRooms.toString());
+        //회원 데이터베이스의 세션 변경하는 작업
 
-        // Add the user session to the global session map
-       // sessions.put(session.getId(), session);
-
-        // Notify the user about joining the chat room
-        Map<String, String> joinMessage = new HashMap<>();
-        joinMessage.put("type", "SYSTEM");
-        joinMessage.put("session", session.getId() );
-        joinMessage.put("content", chatRooms.toString() );
-        System.out.println("chatRooms  toString" + chatRooms.toString());
-        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(joinMessage)));
+        String content = chatRooms.keySet().toString();
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(setNewMessage("OPEN",null,null,null,content))));
     }
 
     public void createChatRoom(WebSocketSession session) throws Exception{
@@ -41,14 +47,13 @@ public class Handler_chat extends TextWebSocketHandler {
         System.out.println("chatRoomId Is "+chatRoomId);
         // Map the user session to the chat room ID
         chatRooms.put(chatRoomId, members);
-        Map<String, String> joinMessage = new HashMap<>();
-        joinMessage.put("type", "SYSTEM");
-        joinMessage.put("chatRoomId", chatRoomId);
-        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(joinMessage)));
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString( setNewMessage("CREATE",chatRoomId,session.getId(),null,null))));
     }
-    public void joinChatRoom(WebSocketSession session,String chatRoomId){
+
+    public void joinChatRoom(WebSocketSession session,String chatRoomId) throws Exception{
         chatRooms.get(chatRoomId).put(session.getId(),session);
         System.out.println(chatRooms);
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString( setNewMessage("JOIN",chatRoomId,session.getId(),null,null))));
     }
     @Override
     protected void handleTextMessage(WebSocketSession senderSession, TextMessage message) throws Exception {
