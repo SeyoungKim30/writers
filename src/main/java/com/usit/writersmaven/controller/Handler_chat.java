@@ -37,7 +37,8 @@ public class Handler_chat extends TextWebSocketHandler{
     //시작
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        users.put(session.getId(),session);
+
+            users.put(session.getId(),session);
         System.out.println("session : 이거 넣어서 보내라" + session.getId());
         System.out.println("users : " +users);
         System.out.println("현재 접속자 : " +users.size());
@@ -56,13 +57,14 @@ public class Handler_chat extends TextWebSocketHandler{
         String senderId = session.getId();
         //String roomId = userChatRooms.get(senderId);
         String chatRoomId = datamap.get("chatRoomId");
-        session.getAttributes().put("chatRoomId", chatRoomId);//세션에 chatRoomId 만듬
         System.out.println("senderId : " + senderId);
         System.out.println("chatRoomId : " + chatRoomId);
 
         System.out.println(users);
  //     System.out.println(datamap);
-        for (WebSocketSession ws : users.values()) {    //
+        //채팅방 들어오면 id 생성해서 userChatRoom에 넣음
+        //보낼때 set에 있으면 보내
+        for (WebSocketSession ws : users.values()) {
             if(Objects.equals(userChatRooms.get(ws.getId()), chatRoomId )){
                 ws.sendMessage(new TextMessage(payload));
             }
